@@ -1,6 +1,7 @@
 import express from 'express';
 import { envs } from './config';
 import { GithubController } from './presentation/github/controller';
+import { GithubCrypMiddleware } from './presentation/middlewares/github-cryp.middleware';
 
 
 (() => {
@@ -16,6 +17,8 @@ function main () {
     const controller = new GithubController();
 
     app.use( express.json() );
+
+    app.use( GithubCrypMiddleware.verifySignature );
 
     app.post('/api/github', controller.webhookHandler );
 
